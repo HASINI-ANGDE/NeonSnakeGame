@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-cyan: #00ffff;
+  --color-magenta: #ff00ff;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --font-pixel: 'Press Start 2P', cursive;
+  --font-terminal: 'VT323', monospace;
+}
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-cyan);
+  font-family: var(--font-terminal);
+  overflow: hidden;
+  text-transform: uppercase;
+}
+
+/* Static Noise Background */
+.bg-static {
+  position: relative;
+}
+.bg-static::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 50;
+  mix-blend-mode: screen;
+}
+
+/* Glitch Text */
+.glitch {
+  position: relative;
+  font-family: var(--font-pixel);
+  color: var(--color-white);
+}
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-black);
+}
+.glitch::before {
+  left: 3px;
+  text-shadow: -2px 0 var(--color-magenta);
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+.glitch::after {
+  left: -3px;
+  text-shadow: -2px 0 var(--color-cyan);
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(14px, 9999px, 11px, 0); }
+  20% { clip: rect(85px, 9999px, 99px, 0); }
+  40% { clip: rect(24px, 9999px, 15px, 0); }
+  60% { clip: rect(100px, 9999px, 80px, 0); }
+  80% { clip: rect(5px, 9999px, 60px, 0); }
+  100% { clip: rect(45px, 9999px, 30px, 0); }
+}
+@keyframes glitch-anim-2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); }
+  20% { clip: rect(3px, 9999px, 20px, 0); }
+  40% { clip: rect(45px, 9999px, 60px, 0); }
+  60% { clip: rect(15px, 9999px, 30px, 0); }
+  80% { clip: rect(80px, 9999px, 95px, 0); }
+  100% { clip: rect(20px, 9999px, 10px, 0); }
+}
+
+/* Screen Tear */
+.screen-tear {
+  animation: tear 3s infinite;
+}
+@keyframes tear {
+  0%, 93% { transform: translateX(0) skewX(0); }
+  94% { transform: translateX(15px) skewX(30deg); filter: hue-rotate(90deg); }
+  95% { transform: translateX(-15px) skewX(-30deg); filter: hue-rotate(-90deg); }
+  96% { transform: translateX(0) skewX(0); filter: hue-rotate(0); }
+}
+
+/* Scanline */
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 8px;
+  background: rgba(255, 0, 255, 0.3);
+  opacity: 0.6;
+  animation: scan 4s linear infinite;
+  pointer-events: none;
+  z-index: 60;
+}
+@keyframes scan {
+  0% { top: -10px; }
+  100% { top: 100vh; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-black);
+  border-left: 2px solid var(--color-cyan);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-magenta);
+}
